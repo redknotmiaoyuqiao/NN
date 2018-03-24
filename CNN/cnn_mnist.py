@@ -60,7 +60,7 @@ pool2 = tf.layers.max_pooling2d(
 # flat
 flat = tf.reshape(pool2, [-1,7 * 7 * 64])
 
-# 1024 
+# 1024
 dense = tf.layers.dense(inputs=flat,units=1024,activation=tf.nn.relu)
 
 # dropout 0.5
@@ -86,7 +86,7 @@ init = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer
 session.run(init)
 
 
-for i in range(2000):
+for i in range(20000):
     batch = mnist.train.next_batch(50)
     train_loss,train_op_ = session.run([loss,train_op],{input_x:batch[0],output_y:batch[1]})
     if i % 100 == 0:

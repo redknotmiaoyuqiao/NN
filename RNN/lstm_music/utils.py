@@ -4,7 +4,7 @@
 import os
 import subprocess
 
-from music21 import converter, instrument, note, chord
+from music21 import converter, instrument, note, chord, stream
 import pickle
 import glob
 
@@ -30,7 +30,7 @@ def get_notes():
     notes = []
     i = 0
     for file in glob.glob('data/music_midi/*.mid'):
-        print("Reader %s" % i)
+        print("Reader %s" % file)
         i += 1
         stream = converter.parse(file)
 
@@ -39,7 +39,7 @@ def get_notes():
             notes_to_parse = parts.parts[0].recurse()
         else:
             notes_to_parse = stream.flat.notes
-    
+
         for element in notes_to_parse:
             #
             if isinstance(element,note.Note):
@@ -49,7 +49,7 @@ def get_notes():
 
     with open('data/notes','wb') as filepath:
         pickle.dump(notes, filepath)
-    
+
     return notes
 
 
@@ -78,10 +78,10 @@ def create_music(prediction):
             new_note.offset = offset
             new_note.storedInstrument = instrument.Piano()
             output_notes.append(new_note)
-        
+
         offset += 0.5
 
-    
+
     midi_stream = stream.Stream(output_notes)
     midi_stream.write('midi',fp='output.mid')
 
